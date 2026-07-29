@@ -8,6 +8,7 @@ export class InventoryPage {
   readonly sortDropdown: Locator;
   readonly menuButton: Locator;
   readonly cartLink: Locator;
+  readonly cartBadge: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,6 +20,7 @@ export class InventoryPage {
       name: "Open Menu",
     });
     this.cartLink = page.locator('[data-test="shopping-cart-link"]');
+    this.cartBadge = page.locator('[data-test="shopping-cart-badge"]');
   }
 
   getProductName(product: Locator): Locator {
@@ -39,6 +41,10 @@ export class InventoryPage {
 
   getAddToCartButton(product: Locator): Locator {
     return product.getByRole("button", { name: "Add to cart" });
+  }
+
+  getRemoveButton(product: Locator): Locator {
+    return product.getByRole("button", { name: "Remove" });
   }
 
   getProductByName(productName: string): Locator {
@@ -71,5 +77,20 @@ export class InventoryPage {
     return priceTexts.map((priceText) =>
       Number(priceText.replace("$", "").trim()),
     );
+  }
+  async addProductToCart(productName: string): Promise<void> {
+    const product = this.getProductByName(productName);
+
+    await this.getAddToCartButton(product).click();
+  }
+
+  async removeProductFromCart(productName: string): Promise<void> {
+    const product = this.getProductByName(productName);
+
+    await this.getRemoveButton(product).click();
+  }
+
+  async openCart(): Promise<void> {
+    await this.cartLink.click();
   }
 }
