@@ -12,7 +12,7 @@ The automated scenarios are based on the test cases documented in the manual tes
 
 The objective of this project is to demonstrate practical web test automation skills through realistic e-commerce scenarios.
 
-The project currently covers login and product inventory functionality and will be expanded incrementally to include shopping cart, checkout, navigation, reusable fixtures, test evidence, and continuous integration.
+The project currently covers login, product inventory, and shopping cart functionality and will be expanded incrementally to include checkout, navigation, reusable fixtures, test evidence, and continuous integration.
 
 ## Application Under Test
 
@@ -74,6 +74,29 @@ The inventory tests validate:
 - numeric price sorting in ascending and descending order;
 - visibility of the menu, shopping cart, and sorting controls.
 
+### Shopping Cart
+
+| Test Case | Scenario |
+|---|---|
+| TC-CAR-001 | Add one product from the inventory page |
+| TC-CAR-002 | Add two different products to the cart |
+| TC-CAR-003 | Add a product from the product details page |
+| TC-CAR-004 | Remove a product through the inventory page |
+| TC-CAR-005 | Remove a product from the cart page |
+| TC-CAR-006 | Continue shopping without losing cart items |
+| TC-CAR-007 | Validate product data consistency between inventory and cart |
+| TC-CAR-008 | Prevent the same product from being added twice |
+
+The shopping cart tests validate:
+
+- cart badge updates after adding and removing products;
+- addition of products from the inventory and product details pages;
+- persistence of cart items while navigating between pages;
+- selective removal without affecting other products;
+- consistency of product name, description, price, and quantity;
+- prevention of duplicate product entries;
+- cart content and item quantity after user actions.
+
 ## Cross-Browser Testing
 
 The test suite is configured to run on:
@@ -85,13 +108,14 @@ The test suite is configured to run on:
 Latest verified local execution:
 
 ```text
-39 passed
+63 passed
 ```
 
-This result represents thirteen automated scenarios executed across three browser engines:
+This result represents twenty-one automated scenarios executed across three browser engines:
 
 - 7 login scenarios;
 - 6 product inventory scenarios;
+- 8 shopping cart scenarios;
 - Chromium, Firefox, and WebKit.
 
 ## Project Structure
@@ -99,6 +123,7 @@ This result represents thirteen automated scenarios executed across three browse
 ```text
 qa-ecommerce-playwright/
 ├── pages/
+│   ├── cart-page.ts
 │   ├── inventory-page.ts
 │   ├── login-page.ts
 │   └── product-details-page.ts
@@ -106,6 +131,8 @@ qa-ecommerce-playwright/
 │   ├── inventory-data.ts
 │   └── login-data.ts
 ├── tests/
+│   ├── cart/
+│   │   └── cart.spec.ts
 │   ├── inventory/
 │   │   └── inventory.spec.ts
 │   └── login/
@@ -214,15 +241,21 @@ The project currently applies:
 - Alphabetical product sorting tests
 - Numeric price sorting tests
 - Inventory and product details Page Objects
-- Full regression execution with 39 passing tests
+- Shopping cart test scenarios
+- Product addition from inventory and details pages
+- Selective product removal tests
+- Cart state persistence validation
+- Product data consistency validation
+- Duplicate product prevention
+- Cart Page Object
+- Full regression execution with 63 passing tests
 
 ### In Progress
 
-- Shopping cart test planning
+- Checkout information test planning
 
 ### Planned
 
-- Shopping cart tests
 - Checkout tests
 - Navigation tests
 - Reusable fixtures
