@@ -1,0 +1,26 @@
+{
+  "name": "qa-ecommerce-playwright",
+  "version": "1.0.0",
+  "description": "Web test automation project for SauceDemo using Playwright and TypeScript",
+  "scripts": {
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "qa",
+    "playwright",
+    "typescript",
+    "e2e",
+    "test-automation"
+  ],
+  "author": "Lidia Martinelli",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^26.1.2"
+  }
+}
