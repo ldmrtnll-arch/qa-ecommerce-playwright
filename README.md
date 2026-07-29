@@ -12,7 +12,7 @@ The automated scenarios are based on the test cases documented in the manual tes
 
 The objective of this project is to demonstrate practical web test automation skills through realistic e-commerce scenarios.
 
-The project currently covers login functionality and will be expanded incrementally to include product catalog, cart, checkout, navigation, test reports, and continuous integration.
+The project currently covers login and product inventory functionality and will be expanded incrementally to include shopping cart, checkout, navigation, reusable fixtures, test evidence, and continuous integration.
 
 ## Application Under Test
 
@@ -53,31 +53,61 @@ The tests validate:
 * navigation to the product inventory;
 * visibility of the product list after login.
 
+### Product Inventory
+
+| Test Case | Scenario |
+|---|---|
+| TC-INV-001 | Display the complete product catalog |
+| TC-INV-002 | Validate consistency between catalog and product details |
+| TC-INV-003 | Sort products by name from A to Z |
+| TC-INV-004 | Sort products by name from Z to A |
+| TC-INV-005 | Sort products by price from low to high |
+| TC-INV-006 | Sort products by price from high to low |
+
+The inventory tests validate:
+
+- catalog title and product list visibility;
+- the presence of six products;
+- product name, description, price, image, and action button;
+- consistency between catalog and product detail information;
+- alphabetical sorting in ascending and descending order;
+- numeric price sorting in ascending and descending order;
+- visibility of the menu, shopping cart, and sorting controls.
+
 ## Cross-Browser Testing
 
 The test suite is configured to run on:
 
-* Chromium
-* Firefox
-* WebKit
+- Chromium
+- Firefox
+- WebKit
 
 Latest verified local execution:
 
 ```text
-21 passed
+39 passed
 ```
 
-This result represents seven login scenarios executed across three browser engines.
+This result represents thirteen automated scenarios executed across three browser engines:
+
+- 7 login scenarios;
+- 6 product inventory scenarios;
+- Chromium, Firefox, and WebKit.
 
 ## Project Structure
 
 ```text
 qa-ecommerce-playwright/
 ├── pages/
-│   └── login-page.ts
+│   ├── inventory-page.ts
+│   ├── login-page.ts
+│   └── product-details-page.ts
 ├── test-data/
+│   ├── inventory-data.ts
 │   └── login-data.ts
 ├── tests/
+│   ├── inventory/
+│   │   └── inventory.spec.ts
 │   └── login/
 │       └── login.spec.ts
 ├── .gitattributes
@@ -179,22 +209,27 @@ The project currently applies:
 * Login Page Object
 * Local HTML reporting
 * Initial Git and GitHub setup
+- Product catalog test scenarios
+- Product detail consistency validation
+- Alphabetical product sorting tests
+- Numeric price sorting tests
+- Inventory and product details Page Objects
+- Full regression execution with 39 passing tests
 
 ### In Progress
 
-* Repository documentation
+- Shopping cart test planning
 
 ### Planned
 
-* Product catalog tests
-* Product sorting tests
-* Shopping cart tests
-* Checkout tests
-* Reusable fixtures
-* GitHub Actions pipeline
-* Test execution evidence
-* Traceability documentation
-* Final project review
+- Shopping cart tests
+- Checkout tests
+- Navigation tests
+- Reusable fixtures
+- GitHub Actions pipeline
+- Test execution evidence
+- Traceability documentation
+- Final project review
 
 ## Author
 
