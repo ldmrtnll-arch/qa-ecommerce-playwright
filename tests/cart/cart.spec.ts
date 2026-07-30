@@ -314,4 +314,29 @@ test.describe("Shopping cart", () => {
 
     await expect(cartPage.getProductQuantity(cartProduct)).toHaveText("1");
   });
+
+  test.fail(
+    "TC-CAR-009 - should prevent checkout with an empty cart",
+    {
+      annotation: {
+        type: "known-defect",
+        description:
+          "SauceDemo allows users to start checkout when the shopping cart is empty.",
+      },
+    },
+    async ({ page }) => {
+      await inventoryPage.openCart();
+
+      await expect(page).toHaveURL(/cart\.html/);
+      await expect(cartPage.pageTitle).toBeVisible();
+      await expect(cartPage.cartItems).toHaveCount(0);
+      await expect(inventoryPage.cartBadge).toBeHidden();
+
+      await cartPage.proceedToCheckout();
+
+      await expect(page).toHaveURL(/cart\.html/);
+      await expect(cartPage.pageTitle).toBeVisible();
+      await expect(cartPage.cartItems).toHaveCount(0);
+    },
+  );
 });
