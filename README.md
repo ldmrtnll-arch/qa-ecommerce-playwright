@@ -1,5 +1,7 @@
 # SauceDemo Web Test Automation
 
+[![Playwright Tests](https://github.com/ldmrtnll-arch/qa-ecommerce-playwright/actions/workflows/playwright.yml/badge.svg)](https://github.com/ldmrtnll-arch/qa-ecommerce-playwright/actions/workflows/playwright.yml)
+
 End-to-end web test automation project for the [SauceDemo](https://www.saucedemo.com/) e-commerce application using Playwright and TypeScript.
 
 This repository is the automation continuation of the manual testing project:
@@ -35,6 +37,7 @@ The suite is being developed incrementally, prioritizing meaningful validations,
 ## Application Under Test
 
 **Application:** SauceDemo
+
 **URL:** https://www.saucedemo.com/
 
 SauceDemo is a sample e-commerce application commonly used for software testing practice.
@@ -47,6 +50,7 @@ SauceDemo is a sample e-commerce application commonly used for software testing 
 - npm
 - Git
 - GitHub
+- GitHub Actions
 
 ## Test Coverage
 
@@ -289,6 +293,9 @@ The same menu locator works reliably before the cart state changes and in the ot
 
 ```text
 qa-ecommerce-playwright/
+├── .github/
+│   └── workflows/
+│       └── playwright.yml
 ├── components/
 │   └── menu-component.ts
 ├── docs/
@@ -356,10 +363,10 @@ Access the project directory:
 cd qa-ecommerce-playwright
 ```
 
-Install the dependencies:
+Install the dependencies from the lock file:
 
 ```bash
-npm install
+npm ci
 ```
 
 Install the Playwright browsers:
@@ -445,7 +452,7 @@ The repository also includes versioned portfolio evidence:
 
 ![Latest local cross-browser execution summary](docs/evidence/test-execution-summary.png)
 
-Latest validated execution:
+Latest validated local execution:
 
 - 43 automated test cases;
 - 129 configured executions;
@@ -456,6 +463,26 @@ Latest validated execution:
 - Playwright summary: `127 passed, 2 skipped`;
 - execution time: 47.0 seconds.
 
+### Latest CI Regression
+
+The full cross-browser suite is automatically executed through GitHub Actions.
+
+Latest validated CI execution:
+
+- workflow: `Playwright Tests`;
+- job: `Cross-browser regression`;
+- branch: `main`;
+- runner: `ubuntu-latest`;
+- Node.js version: 24;
+- 129 configured executions;
+- Playwright summary: `127 passed, 2 skipped`;
+- 0 unexpected failures;
+- execution time: approximately 3.4 minutes;
+- HTML report uploaded as the `playwright-report` artifact;
+- artifact retention: 30 days.
+
+The workflow runs on pull requests targeting `main`, pushes to `main`, and manual executions through `workflow_dispatch`.
+
 The Playwright configuration also supports diagnostic artifacts for unexpected failures, including:
 
 - screenshots;
@@ -463,7 +490,7 @@ The Playwright configuration also supports diagnostic artifacts for unexpected f
 - error context;
 - trace collection on retry.
 
-Generated HTML reports and temporary runtime artifacts are ignored by Git. The selected screenshot and Markdown execution report are versioned as portfolio evidence.
+Generated HTML reports and temporary runtime artifacts are ignored by Git. The selected screenshot and Markdown execution report are versioned as portfolio evidence, while CI reports are stored as downloadable workflow artifacts.
 
 ## Current Automation Practices
 
@@ -485,7 +512,11 @@ The project currently applies:
 - no fixed waits;
 - screenshots and videos retained on failure;
 - Playwright HTML reports;
-- trace collection on test retry.
+- trace collection on test retry;
+- automatic regression execution through GitHub Actions;
+- deterministic CI installation with `npm ci`;
+- HTML report publication as a workflow artifact;
+- read-only repository permission in the CI workflow.
 
 ## Quality Decisions
 
@@ -500,6 +531,8 @@ The project follows these decisions:
 - scenarios remain independent and prepare their own required state;
 - authenticated setup is centralized without sharing state between tests;
 - login tests remain independent because authentication itself is under test;
+- CI runs use one worker to prioritize stability over execution speed;
+- generated runtime reports remain outside source control and are published as CI artifacts;
 - validations focus on business behavior rather than only checking element visibility.
 
 ## Known Limitations
@@ -512,7 +545,6 @@ The project follows these decisions:
 - payment, inventory and delivery integrations are simulated;
 - the Reset App State flow is not executed in WebKit because of the documented side-menu limitation;
 - mobile devices are not currently part of the configured suite;
-- continuous integration has not yet been configured.
 
 ## Project Status
 
@@ -561,20 +593,23 @@ The project follows these decisions:
 - WebKit-specific side menu limitation investigated and documented
 - Local HTML reporting
 - Initial Git and GitHub setup
-- Full regression execution with 129 configured executions: 116 regular passes, 11 expected failures, 2 skipped and 0 unexpected failures
+- Full local regression with 129 configured executions: 116 regular passes, 11 expected failures, 2 skipped and 0 unexpected failures
 - Automated test traceability matrix covering all 43 test cases
 - Test execution report
 - Versioned test execution evidence
+- GitHub Actions pipeline
+- Automatic cross-browser regression on pull requests and pushes to `main`
+- Successful CI execution with `127 passed`, `2 skipped` and 0 unexpected failures
+- Playwright HTML report uploaded as the `playwright-report` workflow artifact
 
 ### In Progress
 
-- GitHub Actions pipeline configuration
+- Clean-clone installation validation
 
 ### Planned
 
-- CI execution evidence and HTML report artifact
-- Clean-clone installation validation
-- Final project review
+- Final repository review
+- Final cross-browser regression
 
 ## Main Learnings
 
@@ -593,6 +628,9 @@ This project demonstrates practical experience with:
 - browser-specific investigation;
 - dynamic calculation validation;
 - test execution reporting;
+- GitHub Actions workflow configuration;
+- CI/CD execution and failure analysis;
+- workflow artifact generation and retention;
 - Git and GitHub workflow;
 - incremental automation development.
 
