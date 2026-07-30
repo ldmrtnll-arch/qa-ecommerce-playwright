@@ -7,6 +7,7 @@ export class MenuComponent {
   readonly allItemsLink: Locator;
   readonly aboutLink: Locator;
   readonly logoutLink: Locator;
+  readonly resetAppStateLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -30,6 +31,10 @@ export class MenuComponent {
     this.logoutLink = page.getByRole('link', {
       name: 'Logout',
     });
+
+    this.resetAppStateLink = page.getByRole('link', {
+      name: 'Reset App State',
+    });
   }
 
   async open(): Promise<void> {
@@ -50,5 +55,9 @@ export class MenuComponent {
 
   async logout(): Promise<void> {
     await this.logoutLink.click();
+  }
+
+  async resetAppState(): Promise<void> {
+    await this.resetAppStateLink.click();
   }
 }
