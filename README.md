@@ -292,6 +292,9 @@ qa-ecommerce-playwright/
 ├── components/
 │   └── menu-component.ts
 ├── docs/
+│   ├── evidence/
+│   │   └── test-execution-summary.png
+│   ├── test-execution-report.md
 │   └── test-traceability.md
 ├── fixtures/
 │   └── authenticated-test.ts
@@ -400,8 +403,10 @@ npm run report
 List all configured tests without executing them:
 
 ```bash
-npx playwright test --list
+npx playwright test --list --reporter=list
 ```
+
+Using `--reporter=list` prevents the test listing command from replacing the latest HTML execution report.
 
 Run a specific spec file:
 
@@ -423,22 +428,42 @@ npx playwright test --project=firefox
 
 ## Reports and Evidence
 
-Playwright generates an HTML report after execution.
+Playwright generates an HTML report after each test execution.
 
-Open the latest report with:
+Open the latest local report with:
 
 ```bash
 npm run report
 ```
 
-The current configuration also supports diagnostic artifacts for failed tests, including:
+The repository also includes versioned portfolio evidence:
+
+- [Test execution report](docs/test-execution-report.md)
+- [Automated test traceability matrix](docs/test-traceability.md)
+
+### Latest Local Regression
+
+![Latest local cross-browser execution summary](docs/evidence/test-execution-summary.png)
+
+Latest validated execution:
+
+- 43 automated test cases;
+- 129 configured executions;
+- 116 regular passes;
+- 11 expected failures;
+- 2 skipped executions;
+- 0 unexpected failures;
+- Playwright summary: `127 passed, 2 skipped`;
+- execution time: 47.0 seconds.
+
+The Playwright configuration also supports diagnostic artifacts for unexpected failures, including:
 
 - screenshots;
 - videos;
 - error context;
 - trace collection on retry.
 
-Generated reports and temporary execution artifacts are not intended to be committed as source code unless selected as portfolio evidence.
+Generated HTML reports and temporary runtime artifacts are ignored by Git. The selected screenshot and Markdown execution report are versioned as portfolio evidence.
 
 ## Current Automation Practices
 
@@ -537,17 +562,18 @@ The project follows these decisions:
 - Local HTML reporting
 - Initial Git and GitHub setup
 - Full regression execution with 129 configured executions: 116 regular passes, 11 expected failures, 2 skipped and 0 unexpected failures
-- Traceability documentation
+- Automated test traceability matrix covering all 43 test cases
+- Test execution report
+- Versioned test execution evidence
 
 ### In Progress
 
-- Test suite documentation and stability review
-- Pull request review for the authenticated fixture refactoring
+- GitHub Actions pipeline configuration
 
 ### Planned
 
-- GitHub Actions pipeline
-- Test execution evidence
+- CI execution evidence and HTML report artifact
+- Clean-clone installation validation
 - Final project review
 
 ## Main Learnings
