@@ -4,7 +4,7 @@ End-to-end web test automation project for the [SauceDemo](https://www.saucedemo
 
 This repository is the automation continuation of the manual testing project:
 
-* [qa-ecommerce-manual-testing](https://github.com/ldmrtnll-arch/qa-ecommerce-manual-testing)
+- [qa-ecommerce-manual-testing](https://github.com/ldmrtnll-arch/qa-ecommerce-manual-testing)
 
 The automated scenarios are based on the test cases documented in the manual testing repository, preserving their original test case IDs for traceability.
 
@@ -12,46 +12,64 @@ The automated scenarios are based on the test cases documented in the manual tes
 
 The objective of this project is to demonstrate practical web test automation skills through realistic e-commerce scenarios.
 
-The project currently covers login, product inventory, shopping cart, checkout customer information, checkout overview, and purchase completion. It will be expanded incrementally to include navigation, authentication state, cart reset, receipt validation, reusable fixtures, test evidence, and continuous integration.
+The project currently covers:
+
+- login and access control;
+- product inventory;
+- product details;
+- product sorting;
+- shopping cart;
+- checkout customer information;
+- checkout overview;
+- purchase completion;
+- confirmation page navigation;
+- side menu navigation;
+- logout and authenticated-session validation;
+- Reset App State behavior;
+- empty-cart checkout validation;
+- known application issue monitoring;
+- cross-browser testing.
+
+The suite is being developed incrementally, prioritizing meaningful validations, reusable components, independent scenarios and transparent handling of known application issues.
 
 ## Application Under Test
 
-**Application:** SauceDemo
+**Application:** SauceDemo<br>
 **URL:** https://www.saucedemo.com/
 
 SauceDemo is a sample e-commerce application commonly used for software testing practice.
 
 ## Technologies
 
-* Playwright
-* TypeScript
-* Node.js
-* npm
-* Git
-* GitHub
+- Playwright
+- TypeScript
+- Node.js
+- npm
+- Git
+- GitHub
 
 ## Test Coverage
 
 ### Login
 
-| Test Case  | Scenario                          |
-| ---------- | --------------------------------- |
-| TC-LOG-001 | Login with valid credentials      |
-| TC-LOG-002 | Login with an invalid username    |
-| TC-LOG-003 | Login with an invalid password    |
+| Test Case | Scenario |
+|---|---|
+| TC-LOG-001 | Login with valid credentials |
+| TC-LOG-002 | Login with an invalid username |
+| TC-LOG-003 | Login with an invalid password |
 | TC-LOG-004 | Login without entering a username |
 | TC-LOG-005 | Login without entering a password |
-| TC-LOG-006 | Login with both fields empty      |
-| TC-LOG-007 | Login with a locked-out user      |
+| TC-LOG-006 | Login with both fields empty |
+| TC-LOG-007 | Login with a locked-out user |
 
-The tests validate:
+The login tests validate:
 
-* successful authentication;
-* access restriction for invalid credentials;
-* required field messages;
-* locked-out account behavior;
-* navigation to the product inventory;
-* visibility of the product list after login.
+- successful authentication;
+- access restriction for invalid credentials;
+- required field messages;
+- locked-out account behavior;
+- navigation to the product inventory;
+- visibility of the product list after login.
 
 ### Product Inventory
 
@@ -68,11 +86,11 @@ The inventory tests validate:
 
 - catalog title and product list visibility;
 - the presence of six products;
-- product name, description, price, image, and action button;
+- product name, description, price, image and action button;
 - consistency between catalog and product detail information;
 - alphabetical sorting in ascending and descending order;
 - numeric price sorting in ascending and descending order;
-- visibility of the menu, shopping cart, and sorting controls.
+- visibility of menu, shopping cart and sorting controls.
 
 ### Shopping Cart
 
@@ -86,16 +104,18 @@ The inventory tests validate:
 | TC-CAR-006 | Continue shopping without losing cart items |
 | TC-CAR-007 | Validate product data consistency between inventory and cart |
 | TC-CAR-008 | Prevent the same product from being added twice |
+| TC-CAR-009 | Prevent checkout with an empty cart |
 
 The shopping cart tests validate:
 
 - cart badge updates after adding and removing products;
-- addition of products from the inventory and product details pages;
+- addition of products from inventory and product details;
 - persistence of cart items while navigating between pages;
 - selective removal without affecting other products;
-- consistency of product name, description, price, and quantity;
+- consistency of product name, description, price and quantity;
 - prevention of duplicate product entries;
-- cart content and item quantity after user actions.
+- cart content after user actions;
+- expected restriction of checkout when the cart is empty.
 
 ### Checkout Information
 
@@ -119,7 +139,7 @@ The checkout information tests validate:
 - cancellation and return to the cart without losing its state;
 - persistence of the selected product during checkout;
 - validation of whitespace-only customer information;
-- validation of invalid postal code characters.
+- behavior with non-numeric and special characters in the postal code.
 
 ### Checkout Overview and Completion
 
@@ -131,26 +151,81 @@ The checkout information tests validate:
 | TC-CHK2-004 | Cancel checkout overview and return to the inventory |
 | TC-CHK2-005 | Finish a valid purchase successfully |
 | TC-CHK2-006 | Clear the cart after completing the purchase |
+| TC-CNF-002 | Return to the inventory from the checkout confirmation page |
 
 The checkout overview and completion tests validate:
 
-- consistency of product name, description, price, and quantity between the cart and checkout overview;
+- consistency of product name, description, price and quantity between the cart and checkout overview;
 - dynamic item subtotal calculation based on price and quantity;
-- monetary formatting for subtotal, tax, and total;
+- monetary formatting for subtotal, tax and total;
 - calculation of the order total from subtotal and tax;
 - checkout cancellation without losing the cart state;
-- successful purchase completion and confirmation messages;
+- successful purchase completion;
+- confirmation header and message;
 - removal of the cart badge after purchase;
-- complete cart cleanup after purchase completion.
+- complete cart cleanup after purchase completion;
+- navigation from the confirmation page back to the product inventory.
 
-### Known Checkout Defects
+### Side Menu Navigation
 
-| Test Case | Observed Behavior | Classification |
-|---|---|---|
-| TC-CHK1-007 | SauceDemo accepts checkout fields containing only whitespace | Known defect |
-| TC-CHK1-008 | SauceDemo accepts non-numeric and special characters as a postal code | Known limitation |
+| Test Case | Scenario |
+|---|---|
+| TC-MEN-001 | Return to the inventory using All Items |
+| TC-MEN-002 | Open the About page |
+| TC-MEN-003 | Close the side menu |
 
-These scenarios remain active using Playwright's `test.fail()` annotation. This allows the suite to continue monitoring the defects and report an unexpected pass when the application behavior changes.
+The side menu tests validate:
+
+- navigation from product details to the inventory;
+- availability of menu options;
+- navigation to the About destination;
+- opening and closing behavior;
+- preservation of the authenticated inventory page after closing the menu.
+
+### Authentication Session
+
+| Test Case | Scenario |
+|---|---|
+| TC-AUT-001 | Log out and prevent restoration of the authenticated session |
+
+The logout test validates:
+
+- availability of the logout option;
+- redirection to the login page;
+- clearing of authentication fields;
+- prevention of authenticated content restoration through browser history.
+
+### Reset App State
+
+| Test Case | Scenario |
+|---|---|
+| TC-RST-001 | Clear the cart using Reset App State |
+| TC-RST-002 | Keep the cart empty after reloading the inventory page |
+
+The Reset App State tests validate:
+
+- removal of products from the cart;
+- removal of the cart badge;
+- persistence of the empty cart after page reload;
+- restoration of product action buttons;
+- cart consistency after the reset operation.
+
+## Monitored Expected Failures
+
+Known application behaviors remain active in the suite using Playwright's `test.fail()` annotation.
+
+| Test Case | Observed Behavior | Classification | Browser Executions |
+|---|---|---|---|
+| TC-CAR-009 | SauceDemo allows checkout to continue with an empty cart | Known defect | Chromium, Firefox and WebKit — 3 executions |
+| TC-CHK1-007 | SauceDemo accepts required fields containing only whitespace | Known defect | Chromium, Firefox and WebKit — 3 executions |
+| TC-CHK1-008 | SauceDemo accepts non-numeric values and special characters as a postal code | Behavior under investigation | Chromium, Firefox and WebKit — 3 executions |
+| TC-RST-001 | Reset App State clears the cart but does not immediately update product buttons from **Remove** to **Add to cart** | Known defect | Chromium and Firefox — 2 executions |
+
+These four scenarios produce 11 expected-failure executions.
+
+Playwright treats an expected failure as a successful suite outcome when the observed behavior matches the `test.fail()` annotation. An unexpected pass indicates that the application behavior may have changed and should be reviewed.
+
+The `TC-CHK1-008` behavior remains under investigation because no official postal-code format requirements are available for the tested application.
 
 ## Cross-Browser Testing
 
@@ -160,31 +235,62 @@ The test suite is configured to run on:
 - Firefox
 - WebKit
 
-Latest verified local execution:
+### Latest Verified Local Execution
 
 ```text
-105 passed (35.5s)
+127 passed
+2 skipped
+0 unexpected failures
+49.1s
 ```
 
-This result represents thirty-five automated scenarios executed across three browser engines:
+The suite contains 43 independent automated scenarios and 129 configured browser executions.
 
-- 7 login scenarios;
-- 6 product inventory scenarios;
-- 8 shopping cart scenarios;
-- 8 checkout information scenarios;
-- 6 checkout overview and completion scenarios;
-- Chromium, Firefox, and WebKit.
+| Spec file | Scenarios |
+|---|---:|
+| `auth/logout.spec.ts` | 1 |
+| `cart/cart.spec.ts` | 9 |
+| `checkout/checkout-information.spec.ts` | 8 |
+| `checkout/checkout-overview.spec.ts` | 7 |
+| `inventory/inventory.spec.ts` | 6 |
+| `login/login.spec.ts` | 7 |
+| `navigation/menu.spec.ts` | 3 |
+| `state/reset-app-state.spec.ts` | 2 |
+| **Total** | **43** |
 
-Of the 105 executions:
+The 127 outcomes reported as passed by Playwright include expected failures. The actual distribution is:
 
-- 99 regular executions passed;
-- 6 expected failures confirmed the two known checkout defects across the three browsers;
-- no unexpected failures were found.
+| Result | Executions |
+|---|---:|
+| Regular passes | 116 |
+| Expected failures | 11 |
+| Skipped | 2 |
+| Unexpected failures | 0 |
+| **Total configured executions** | **129** |
+
+### WebKit-Specific Limitation
+
+`TC-RST-001` and `TC-RST-002` are skipped only on WebKit.
+
+After products are added to the cart, the SauceDemo side menu may not open reliably in that browser engine. The limitation prevents the Reset App State option from being reached consistently.
+
+The investigation produced the following results:
+
+| Browser and condition | Result |
+|---|---:|
+| WebKit — menu without cart changes | 10/10 passed |
+| WebKit — menu after adding products | 3/10 passed |
+| Chromium — menu after adding products | 10/10 passed |
+| Firefox — menu after adding products | 10/10 passed |
+
+The same menu locator works reliably before the cart state changes and in the other tested browser engines. The Reset App State scenarios therefore remain active in Chromium and Firefox and are explicitly skipped in WebKit with a documented reason.
 
 ## Project Structure
 
 ```text
 qa-ecommerce-playwright/
+├── components/
+│   └── menu-component.ts
 ├── pages/
 │   ├── cart-page.ts
 │   ├── checkout-complete-page.ts
@@ -198,6 +304,8 @@ qa-ecommerce-playwright/
 │   ├── inventory-data.ts
 │   └── login-data.ts
 ├── tests/
+│   ├── auth/
+│   │   └── logout.spec.ts
 │   ├── cart/
 │   │   └── cart.spec.ts
 │   ├── checkout/
@@ -205,8 +313,12 @@ qa-ecommerce-playwright/
 │   │   └── checkout-overview.spec.ts
 │   ├── inventory/
 │   │   └── inventory.spec.ts
-│   └── login/
-│       └── login.spec.ts
+│   ├── login/
+│   │   └── login.spec.ts
+│   ├── navigation/
+│   │   └── menu.spec.ts
+│   └── state/
+│       └── reset-app-state.spec.ts
 ├── .gitattributes
 ├── .gitignore
 ├── package-lock.json
@@ -219,9 +331,9 @@ qa-ecommerce-playwright/
 
 Before running the project, install:
 
-* Node.js
-* npm
-* Git
+- Node.js
+- npm
+- Git
 
 ## Installation
 
@@ -281,21 +393,93 @@ Open the latest HTML report:
 npm run report
 ```
 
+List all configured tests without executing them:
+
+```bash
+npx playwright test --list
+```
+
+Run a specific spec file:
+
+```bash
+npx playwright test tests/cart/cart.spec.ts
+```
+
+Run a specific scenario by its test case ID:
+
+```bash
+npx playwright test --grep "TC-CAR-009"
+```
+
+Run a specific browser project:
+
+```bash
+npx playwright test --project=firefox
+```
+
+## Reports and Evidence
+
+Playwright generates an HTML report after execution.
+
+Open the latest report with:
+
+```bash
+npm run report
+```
+
+The current configuration also supports diagnostic artifacts for failed tests, including:
+
+- screenshots;
+- videos;
+- error context;
+- trace collection on retry.
+
+Generated reports and temporary execution artifacts are not intended to be committed as source code unless selected as portfolio evidence.
+
 ## Current Automation Practices
 
 The project currently applies:
 
-* independent test scenarios;
-* parallel test execution;
-* cross-browser testing;
-* reusable test data;
-* traceability through test case IDs;
-* monitoring of known defects with `test.fail()` annotations;
-* Page Object Model where reuse provides value;
-* assertions for navigation, messages, and page content;
-* screenshots and videos retained on failure;
-* Playwright HTML reports;
-* trace collection on test retry.
+- independent test scenarios;
+- parallel test execution;
+- cross-browser testing;
+- reusable test data;
+- traceability through test case IDs;
+- monitoring of known defects with `test.fail()` annotations;
+- explicit skips with documented technical reasons;
+- Page Object Model where reuse provides value;
+- reusable menu component;
+- assertions for navigation, messages, calculations and page content;
+- dynamic validation of product and order data;
+- no fixed waits;
+- screenshots and videos retained on failure;
+- Playwright HTML reports;
+- trace collection on test retry.
+
+## Quality Decisions
+
+The project follows these decisions:
+
+- known application defects remain monitored instead of being removed from the suite;
+- expected failures are distinguished from unexpected automation failures;
+- `test.fail()` is applied only when the intended known behavior has been reached;
+- browser-specific limitations are documented explicitly;
+- unstable behavior is investigated through repeated and isolated execution;
+- tests are not stabilized with arbitrary fixed waits;
+- scenarios remain independent and prepare their own required state;
+- validations focus on business behavior rather than only checking element visibility.
+
+## Known Limitations
+
+- SauceDemo is a public demonstration application and may change without notice;
+- official business requirements are not available;
+- no database access is available;
+- no backend or API access is available;
+- order persistence cannot be validated directly;
+- payment, inventory and delivery integrations are simulated;
+- the Reset App State flow is not executed in WebKit because of the documented side-menu limitation;
+- mobile devices are not currently part of the configured suite;
+- continuous integration has not yet been configured.
 
 ## Project Status
 
@@ -317,13 +501,13 @@ The project currently applies:
 - Cart state persistence validation
 - Product data consistency validation
 - Duplicate product prevention
+- Empty-cart checkout validation
 - Cart Page Object
 - Checkout information test scenarios
 - Required customer information validation
 - Checkout cancellation and cart persistence validation
 - Checkout Information Page Object
 - Reusable checkout test data
-- Known checkout defect monitoring
 - Checkout overview and completion test scenarios
 - Dynamic product data comparison between cart and checkout
 - Item subtotal validation
@@ -333,27 +517,46 @@ The project currently applies:
 - Cart cleanup validation after purchase
 - Checkout Overview Page Object
 - Checkout Complete Page Object
+- Checkout confirmation page navigation
+- Side menu navigation scenarios
+- Reusable menu component
+- Logout and authenticated-session validation
+- Reset App State scenarios
+- Known application issue monitoring with Playwright expected-failure annotations
+- WebKit-specific side menu limitation investigated and documented
 - Local HTML reporting
 - Initial Git and GitHub setup
-- Full regression execution with 105 successful outcomes, including 6 expected failures
+- Full regression execution with 129 configured executions: 116 regular passes, 11 expected failures, 2 skipped and 0 unexpected failures
 
 ### In Progress
 
-- Checkout confirmation navigation test planning
+- Test suite documentation and stability review
 
 ### Planned
 
-- Checkout confirmation navigation automation
-- Menu and general navigation tests
-- Logout and authenticated-session validation
-- Cart reset tests
-- Empty-cart checkout validation
-- Receipt PDF validation
 - Reusable fixtures
 - GitHub Actions pipeline
 - Test execution evidence
 - Traceability documentation
 - Final project review
+
+## Main Learnings
+
+This project demonstrates practical experience with:
+
+- test case automation from existing manual documentation;
+- Playwright locators and assertions;
+- Page Object Model and reusable components;
+- reusable test data;
+- positive, negative and alternative scenarios;
+- cross-browser execution;
+- expected-failure monitoring;
+- debugging flaky behavior;
+- browser-specific investigation;
+- dynamic calculation validation;
+- test execution reporting;
+- Git and GitHub workflow;
+- incremental automation development.
 
 ## Author
 
