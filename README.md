@@ -12,7 +12,7 @@ The automated scenarios are based on the test cases documented in the manual tes
 
 The objective of this project is to demonstrate practical web test automation skills through realistic e-commerce scenarios.
 
-The project currently covers login, product inventory, shopping cart, and checkout customer information. It will be expanded incrementally to include checkout overview and completion, navigation, reusable fixtures, test evidence, and continuous integration.
+The project currently covers login, product inventory, shopping cart, checkout customer information, checkout overview, and purchase completion. It will be expanded incrementally to include navigation, authentication state, cart reset, receipt validation, reusable fixtures, test evidence, and continuous integration.
 
 ## Application Under Test
 
@@ -121,6 +121,28 @@ The checkout information tests validate:
 - validation of whitespace-only customer information;
 - validation of invalid postal code characters.
 
+### Checkout Overview and Completion
+
+| Test Case | Scenario |
+|---|---|
+| TC-CHK2-001 | Display the selected product in the checkout overview |
+| TC-CHK2-002 | Calculate the item subtotal correctly |
+| TC-CHK2-003 | Calculate the order total correctly |
+| TC-CHK2-004 | Cancel checkout overview and return to the inventory |
+| TC-CHK2-005 | Finish a valid purchase successfully |
+| TC-CHK2-006 | Clear the cart after completing the purchase |
+
+The checkout overview and completion tests validate:
+
+- consistency of product name, description, price, and quantity between the cart and checkout overview;
+- dynamic item subtotal calculation based on price and quantity;
+- monetary formatting for subtotal, tax, and total;
+- calculation of the order total from subtotal and tax;
+- checkout cancellation without losing the cart state;
+- successful purchase completion and confirmation messages;
+- removal of the cart badge after purchase;
+- complete cart cleanup after purchase completion.
+
 ### Known Checkout Defects
 
 | Test Case | Observed Behavior | Classification |
@@ -141,21 +163,23 @@ The test suite is configured to run on:
 Latest verified local execution:
 
 ```text
-87 passed (38.3s)
+105 passed (35.5s)
 ```
 
-This result represents twenty-nine automated scenarios executed across three browser engines:
+This result represents thirty-five automated scenarios executed across three browser engines:
 
 - 7 login scenarios;
 - 6 product inventory scenarios;
 - 8 shopping cart scenarios;
 - 8 checkout information scenarios;
+- 6 checkout overview and completion scenarios;
 - Chromium, Firefox, and WebKit.
 
-Of the 87 executions:
+Of the 105 executions:
 
-- 81 regular executions passed;
-- 6 expected failures confirmed the two known checkout defects across the three browsers.
+- 99 regular executions passed;
+- 6 expected failures confirmed the two known checkout defects across the three browsers;
+- no unexpected failures were found.
 
 ## Project Structure
 
@@ -163,7 +187,9 @@ Of the 87 executions:
 qa-ecommerce-playwright/
 ├── pages/
 │   ├── cart-page.ts
+│   ├── checkout-complete-page.ts
 │   ├── checkout-information-page.ts
+│   ├── checkout-overview-page.ts
 │   ├── inventory-page.ts
 │   ├── login-page.ts
 │   └── product-details-page.ts
@@ -175,7 +201,8 @@ qa-ecommerce-playwright/
 │   ├── cart/
 │   │   └── cart.spec.ts
 │   ├── checkout/
-│   │   └── checkout-information.spec.ts
+│   │   ├── checkout-information.spec.ts
+│   │   └── checkout-overview.spec.ts
 │   ├── inventory/
 │   │   └── inventory.spec.ts
 │   └── login/
@@ -297,18 +324,31 @@ The project currently applies:
 - Checkout Information Page Object
 - Reusable checkout test data
 - Known checkout defect monitoring
+- Checkout overview and completion test scenarios
+- Dynamic product data comparison between cart and checkout
+- Item subtotal validation
+- Tax and order total validation
+- Checkout overview cancellation validation
+- Successful purchase completion validation
+- Cart cleanup validation after purchase
+- Checkout Overview Page Object
+- Checkout Complete Page Object
 - Local HTML reporting
 - Initial Git and GitHub setup
-- Full regression execution with 87 successful outcomes, including 6 expected failures
+- Full regression execution with 105 successful outcomes, including 6 expected failures
 
 ### In Progress
 
-- Checkout overview and completion test planning
+- Checkout confirmation navigation test planning
 
 ### Planned
 
-- Checkout overview and completion automation
-- Navigation tests
+- Checkout confirmation navigation automation
+- Menu and general navigation tests
+- Logout and authenticated-session validation
+- Cart reset tests
+- Empty-cart checkout validation
+- Receipt PDF validation
 - Reusable fixtures
 - GitHub Actions pipeline
 - Test execution evidence
