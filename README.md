@@ -548,6 +548,8 @@ The project follows these decisions:
 
 ## Project Status
 
+**Status: Completed**
+
 ### Completed
 
 - Playwright and TypeScript setup
@@ -601,15 +603,8 @@ The project follows these decisions:
 - Automatic cross-browser regression on pull requests and pushes to `main`
 - Successful CI execution with `127 passed`, `2 skipped` and 0 unexpected failures
 - Playwright HTML report uploaded as the `playwright-report` workflow artifact
-
-### In Progress
-
-- Clean-clone installation validation
-
-### Planned
-
 - Final repository review
-- Final cross-browser regression
+- Final cross-browser regression validated through GitHub Actions
 
 ## Main Learnings
 
