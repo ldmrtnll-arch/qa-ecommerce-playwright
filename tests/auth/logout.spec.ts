@@ -1,28 +1,20 @@
-import { expect, test } from '@playwright/test';
+import {
+  expect,
+  test,
+} from '../../fixtures/authenticated-test';
 import { MenuComponent } from '../../components/menu-component';
 import { InventoryPage } from '../../pages/inventory-page';
 import { LoginPage } from '../../pages/login-page';
-import { loginUsers } from '../../test-data/login-data';
 
 test.describe('Authentication session', () => {
   let inventoryPage: InventoryPage;
   let loginPage: LoginPage;
   let menu: MenuComponent;
 
-  test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
-    inventoryPage = new InventoryPage(page);
-    menu = new MenuComponent(page);
-
-    await loginPage.goto();
-
-    await loginPage.login(
-      loginUsers.standard.username,
-      loginUsers.standard.password,
-    );
-
-    await expect(page).toHaveURL(/inventory\.html/);
-    await expect(inventoryPage.pageTitle).toBeVisible();
+  test.beforeEach(async ({ authenticatedPage }) => {
+    loginPage = new LoginPage(authenticatedPage);
+    inventoryPage = new InventoryPage(authenticatedPage);
+    menu = new MenuComponent(authenticatedPage);
   });
 
   test('TC-AUT-001 - should log out and prevent restoration of the authenticated session', async ({

@@ -1,55 +1,55 @@
-import { expect, test } from '@playwright/test';
+import {
+  expect,
+  test,
+} from '../../fixtures/authenticated-test';
 import { MenuComponent } from '../../components/menu-component';
 import { CartPage } from '../../pages/cart-page';
 import { InventoryPage } from '../../pages/inventory-page';
-import { LoginPage } from '../../pages/login-page';
 import { inventoryProducts } from '../../test-data/inventory-data';
-import { loginUsers } from '../../test-data/login-data';
 
 test.describe('Reset app state', () => {
   let cartPage: CartPage;
   let inventoryPage: InventoryPage;
   let menu: MenuComponent;
 
-  test.beforeEach(async ({ page, browserName }) => {
-    test.skip(
-      browserName === 'webkit',
-      'Blocked by a SauceDemo issue: the side menu may not open in WebKit after cart state changes.',
-    );
+  test.skip(
+    ({ browserName }) => browserName === 'webkit',
+    'Blocked by a SauceDemo issue: the side menu may not open in WebKit after cart state changes.',
+  );
 
-    const loginPage = new LoginPage(page);
-
-    cartPage = new CartPage(page);
-    inventoryPage = new InventoryPage(page);
-    menu = new MenuComponent(page);
-
-    await loginPage.goto();
-
-    await loginPage.login(
-      loginUsers.standard.username,
-      loginUsers.standard.password,
-    );
-
-    await expect(page).toHaveURL(/inventory\.html/);
-    await expect(inventoryPage.pageTitle).toBeVisible();
+  test.beforeEach(async ({ authenticatedPage }) => {
+    cartPage = new CartPage(authenticatedPage);
+    inventoryPage = new InventoryPage(authenticatedPage);
+    menu = new MenuComponent(authenticatedPage);
   });
 
   test('TC-RST-001 - should clear the cart using Reset App State', async ({
     page,
   }) => {
-    const firstProductName = inventoryProducts.backpack.name;
-    const secondProductName = inventoryProducts.bikeLight.name;
+    const firstProductName =
+      inventoryProducts.backpack.name;
 
-    const firstProduct = inventoryPage.getProductByName(firstProductName);
-    const secondProduct = inventoryPage.getProductByName(secondProductName);
+    const secondProductName =
+      inventoryProducts.bikeLight.name;
+
+    const firstProduct =
+      inventoryPage.getProductByName(firstProductName);
+
+    const secondProduct =
+      inventoryPage.getProductByName(secondProductName);
 
     await inventoryPage.addProductToCart(firstProductName);
     await inventoryPage.addProductToCart(secondProductName);
 
     await expect(inventoryPage.cartBadge).toHaveText('2');
 
-    await expect(inventoryPage.getRemoveButton(firstProduct)).toBeVisible();
-    await expect(inventoryPage.getRemoveButton(secondProduct)).toBeVisible();
+    await expect(
+      inventoryPage.getRemoveButton(firstProduct),
+    ).toBeVisible();
+
+    await expect(
+      inventoryPage.getRemoveButton(secondProduct),
+    ).toBeVisible();
 
     await menu.open();
 
@@ -78,7 +78,16 @@ test.describe('Reset app state', () => {
     await expect(cartPage.cartItems).toHaveCount(0);
 
     const productButtonsWereReset =
-      firstProductButtonWasReset && secondProductButtonWasReset;
+      firstProductButtonWasReset &&
+      secondProductButtonWasReset;
+
+    if (!productButtonsWereReset) {
+      test.info().annotations.push({
+        type: 'known-defect',
+        description:
+          'Reset App State clears the cart but does not refresh product action buttons.',
+      });
+    }
 
     test.fail(
       !productButtonsWereReset,
@@ -92,8 +101,11 @@ test.describe('Reset app state', () => {
   test('TC-RST-002 - should keep the cart empty after reloading the inventory page', async ({
     page,
   }) => {
-    const firstProductName = inventoryProducts.backpack.name;
-    const secondProductName = inventoryProducts.bikeLight.name;
+    const firstProductName =
+      inventoryProducts.backpack.name;
+
+    const secondProductName =
+      inventoryProducts.bikeLight.name;
 
     await inventoryPage.addProductToCart(firstProductName);
     await inventoryPage.addProductToCart(secondProductName);
@@ -116,8 +128,11 @@ test.describe('Reset app state', () => {
     await expect(inventoryPage.inventoryList).toBeVisible();
     await expect(inventoryPage.cartBadge).toBeHidden();
 
-    const firstProduct = inventoryPage.getProductByName(firstProductName);
-    const secondProduct = inventoryPage.getProductByName(secondProductName);
+    const firstProduct =
+      inventoryPage.getProductByName(firstProductName);
+
+    const secondProduct =
+      inventoryPage.getProductByName(secondProductName);
 
     await expect(
       inventoryPage.getAddToCartButton(firstProduct),
