@@ -34,7 +34,7 @@ The suite is being developed incrementally, prioritizing meaningful validations,
 
 ## Application Under Test
 
-**Application:** SauceDemo<br>
+**Application:** SauceDemo
 **URL:** https://www.saucedemo.com/
 
 SauceDemo is a sample e-commerce application commonly used for software testing practice.
@@ -241,7 +241,7 @@ The test suite is configured to run on:
 127 passed
 2 skipped
 0 unexpected failures
-49.1s
+47.0s
 ```
 
 The suite contains 43 independent automated scenarios and 129 configured browser executions.
@@ -291,6 +291,8 @@ The same menu locator works reliably before the cart state changes and in the ot
 qa-ecommerce-playwright/
 ├── components/
 │   └── menu-component.ts
+├── fixtures/
+│   └── authenticated-test.ts
 ├── pages/
 │   ├── cart-page.ts
 │   ├── checkout-complete-page.ts
@@ -444,6 +446,8 @@ The project currently applies:
 - parallel test execution;
 - cross-browser testing;
 - reusable test data;
+- reusable authenticated fixture for standard-user sessions;
+- centralized authentication setup across seven test suites;
 - traceability through test case IDs;
 - monitoring of known defects with `test.fail()` annotations;
 - explicit skips with documented technical reasons;
@@ -467,6 +471,8 @@ The project follows these decisions:
 - unstable behavior is investigated through repeated and isolated execution;
 - tests are not stabilized with arbitrary fixed waits;
 - scenarios remain independent and prepare their own required state;
+- authenticated setup is centralized without sharing state between tests;
+- login tests remain independent because authentication itself is under test;
 - validations focus on business behavior rather than only checking element visibility.
 
 ## Known Limitations
@@ -520,6 +526,8 @@ The project follows these decisions:
 - Checkout confirmation page navigation
 - Side menu navigation scenarios
 - Reusable menu component
+- Reusable authenticated fixture for standard-user sessions
+- Authentication setup centralized across seven test suites
 - Logout and authenticated-session validation
 - Reset App State scenarios
 - Known application issue monitoring with Playwright expected-failure annotations
@@ -531,10 +539,10 @@ The project follows these decisions:
 ### In Progress
 
 - Test suite documentation and stability review
+- Pull request review for the authenticated fixture refactoring
 
 ### Planned
 
-- Reusable fixtures
 - GitHub Actions pipeline
 - Test execution evidence
 - Traceability documentation
@@ -548,6 +556,8 @@ This project demonstrates practical experience with:
 - Playwright locators and assertions;
 - Page Object Model and reusable components;
 - reusable test data;
+- reusable Playwright fixtures;
+- centralized authenticated test setup;
 - positive, negative and alternative scenarios;
 - cross-browser execution;
 - expected-failure monitoring;
