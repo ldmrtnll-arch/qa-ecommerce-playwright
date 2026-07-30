@@ -58,4 +58,8 @@ export class CartPage {
   async continueShopping(): Promise<void> {
     await this.continueShoppingButton.click();
   }
+
+  async proceedToCheckout(): Promise<void> {
+    await this.checkoutButton.click();
+  }
 }
