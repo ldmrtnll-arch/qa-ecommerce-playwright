@@ -233,4 +233,23 @@ test.describe('Checkout overview', () => {
       cartPage.getProductByName(inventoryProducts.backpack.name),
     ).toHaveCount(0);
   });
+
+  test('TC-CNF-002 - should return to the inventory from the checkout confirmation page', async ({
+    page,
+  }) => {
+    await checkoutOverviewPage.finish();
+
+    await expect(page).toHaveURL(/checkout-complete\.html/);
+
+    await expect(checkoutCompletePage.pageTitle).toBeVisible();
+
+    await expect(checkoutCompletePage.backHomeButton).toBeVisible();
+    await expect(checkoutCompletePage.backHomeButton).toBeEnabled();
+
+    await checkoutCompletePage.returnToInventory();
+
+    await expect(page).toHaveURL(/inventory\.html/);
+    await expect(inventoryPage.pageTitle).toBeVisible();
+    await expect(inventoryPage.cartBadge).toHaveCount(0);
+  });
 });
