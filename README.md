@@ -291,6 +291,8 @@ The same menu locator works reliably before the cart state changes and in the ot
 qa-ecommerce-playwright/
 ├── components/
 │   └── menu-component.ts
+├── docs/
+│   └── test-traceability.md
 ├── fixtures/
 │   └── authenticated-test.ts
 ├── pages/
@@ -535,6 +537,7 @@ The project follows these decisions:
 - Local HTML reporting
 - Initial Git and GitHub setup
 - Full regression execution with 129 configured executions: 116 regular passes, 11 expected failures, 2 skipped and 0 unexpected failures
+- Traceability documentation
 
 ### In Progress
 
@@ -545,7 +548,6 @@ The project follows these decisions:
 
 - GitHub Actions pipeline
 - Test execution evidence
-- Traceability documentation
 - Final project review
 
 ## Main Learnings
