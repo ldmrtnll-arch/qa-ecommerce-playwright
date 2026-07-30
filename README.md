@@ -12,7 +12,7 @@ The automated scenarios are based on the test cases documented in the manual tes
 
 The objective of this project is to demonstrate practical web test automation skills through realistic e-commerce scenarios.
 
-The project currently covers login, product inventory, and shopping cart functionality and will be expanded incrementally to include checkout, navigation, reusable fixtures, test evidence, and continuous integration.
+The project currently covers login, product inventory, shopping cart, and checkout customer information. It will be expanded incrementally to include checkout overview and completion, navigation, reusable fixtures, test evidence, and continuous integration.
 
 ## Application Under Test
 
@@ -97,6 +97,39 @@ The shopping cart tests validate:
 - prevention of duplicate product entries;
 - cart content and item quantity after user actions.
 
+### Checkout Information
+
+| Test Case | Scenario |
+|---|---|
+| TC-CHK1-001 | Continue checkout with valid customer information |
+| TC-CHK1-002 | Require the first name field |
+| TC-CHK1-003 | Require the last name field |
+| TC-CHK1-004 | Require the postal code field |
+| TC-CHK1-005 | Prevent checkout when all fields are empty |
+| TC-CHK1-006 | Cancel checkout information and return to the cart |
+| TC-CHK1-007 | Reject fields containing only spaces |
+| TC-CHK1-008 | Reject an invalid postal code |
+
+The checkout information tests validate:
+
+- navigation from the cart to the checkout information page;
+- successful continuation with valid customer data;
+- required field validation;
+- preservation of valid values after validation errors;
+- cancellation and return to the cart without losing its state;
+- persistence of the selected product during checkout;
+- validation of whitespace-only customer information;
+- validation of invalid postal code characters.
+
+### Known Checkout Defects
+
+| Test Case | Observed Behavior | Classification |
+|---|---|---|
+| TC-CHK1-007 | SauceDemo accepts checkout fields containing only whitespace | Known defect |
+| TC-CHK1-008 | SauceDemo accepts non-numeric and special characters as a postal code | Known limitation |
+
+These scenarios remain active using Playwright's `test.fail()` annotation. This allows the suite to continue monitoring the defects and report an unexpected pass when the application behavior changes.
+
 ## Cross-Browser Testing
 
 The test suite is configured to run on:
@@ -108,15 +141,21 @@ The test suite is configured to run on:
 Latest verified local execution:
 
 ```text
-63 passed
+87 passed (38.3s)
 ```
 
-This result represents twenty-one automated scenarios executed across three browser engines:
+This result represents twenty-nine automated scenarios executed across three browser engines:
 
 - 7 login scenarios;
 - 6 product inventory scenarios;
 - 8 shopping cart scenarios;
+- 8 checkout information scenarios;
 - Chromium, Firefox, and WebKit.
+
+Of the 87 executions:
+
+- 81 regular executions passed;
+- 6 expected failures confirmed the two known checkout defects across the three browsers.
 
 ## Project Structure
 
@@ -124,15 +163,19 @@ This result represents twenty-one automated scenarios executed across three brow
 qa-ecommerce-playwright/
 ├── pages/
 │   ├── cart-page.ts
+│   ├── checkout-information-page.ts
 │   ├── inventory-page.ts
 │   ├── login-page.ts
 │   └── product-details-page.ts
 ├── test-data/
+│   ├── checkout-data.ts
 │   ├── inventory-data.ts
 │   └── login-data.ts
 ├── tests/
 │   ├── cart/
 │   │   └── cart.spec.ts
+│   ├── checkout/
+│   │   └── checkout-information.spec.ts
 │   ├── inventory/
 │   │   └── inventory.spec.ts
 │   └── login/
@@ -219,6 +262,8 @@ The project currently applies:
 * parallel test execution;
 * cross-browser testing;
 * reusable test data;
+* traceability through test case IDs;
+* monitoring of known defects with `test.fail()` annotations;
 * Page Object Model where reuse provides value;
 * assertions for navigation, messages, and page content;
 * screenshots and videos retained on failure;
@@ -229,13 +274,11 @@ The project currently applies:
 
 ### Completed
 
-* Playwright and TypeScript setup
-* Cross-browser configuration
-* Login test scenarios
-* Reusable login test data
-* Login Page Object
-* Local HTML reporting
-* Initial Git and GitHub setup
+- Playwright and TypeScript setup
+- Cross-browser configuration
+- Login test scenarios
+- Reusable login test data
+- Login Page Object
 - Product catalog test scenarios
 - Product detail consistency validation
 - Alphabetical product sorting tests
@@ -248,15 +291,23 @@ The project currently applies:
 - Product data consistency validation
 - Duplicate product prevention
 - Cart Page Object
-- Full regression execution with 63 passing tests
+- Checkout information test scenarios
+- Required customer information validation
+- Checkout cancellation and cart persistence validation
+- Checkout Information Page Object
+- Reusable checkout test data
+- Known checkout defect monitoring
+- Local HTML reporting
+- Initial Git and GitHub setup
+- Full regression execution with 87 successful outcomes, including 6 expected failures
 
 ### In Progress
 
-- Checkout information test planning
+- Checkout overview and completion test planning
 
 ### Planned
 
-- Checkout tests
+- Checkout overview and completion automation
 - Navigation tests
 - Reusable fixtures
 - GitHub Actions pipeline
